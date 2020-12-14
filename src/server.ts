@@ -1,4 +1,4 @@
-import express, { response } from 'express';
+import express, { Request, Response } from 'express';
 import bodyParser from 'body-parser';
 import {
   filterImageFromURL,
@@ -32,7 +32,7 @@ import {
 
   /**************************************************************************** */
 
-  app.get("/filteredimage", async (req, res) => {
+  app.get("/filteredimage", async (req: Request, res: Response) => {
     let { image_url } = req.query;
 
     if (!image_url) {
