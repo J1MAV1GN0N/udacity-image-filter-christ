@@ -4,6 +4,7 @@ import {
   filterImageFromURL,
   deleteLocalFiles
 } from './util/util';
+import { config } from './config/config';
 
 (async () => {
 
@@ -22,6 +23,9 @@ import {
   
   // Use the body parser middleware for post requests
   app.use(bodyParser.json());
+
+  // Get variables from config file
+  const conf = config;
 
  // @TODO1 IMPLEMENT A RESTFUL ENDPOINT
   // GET /filteredimage?image_url={{URL}}
@@ -42,8 +46,14 @@ import {
   app.get("/filteredimage", async (req: Request, res: Response) => {
     let { image_url } = req.query;
 
+    let apiKey = req.header("X-API-Key");
+
+    if (!apiKey || apiKey != conf.api_key) {
+      return res.status(401).send({ auth: false, message: 'Unauthorized - Invalid api key.' });
+    }
+
     if (!image_url) {
-      return res.status(400).send(`An image URL is required.`);
+      return res.status(422).send({ auth: true, message: 'An image URL is required.'});
     }
 
     try {
@@ -51,12 +61,12 @@ import {
       const filteredpath = await filterImageFromURL(image_url)
       // Send the resulting file in response.
       res.status(200).sendFile(filteredpath, {}, (err) => {
-        if (err) { return res.status(422).send(`Unprocessable Entity - Not able to process the image.`); }
+        if (err) { return res.status(422).send('Unprocessable Entity - Not able to process the image.'); }
         // Deleting any used image file.
         deleteLocalFiles([filteredpath]);
       })
     } catch (err) {
-      res.status(422).send(`Unprocessable Entity - Not able to process the image, make sure image url you are using is correct.`);
+      res.status(422).send('Unprocessable Entity - Not able to process the image, make sure image url you are using is correct.');
     }
   });
 
