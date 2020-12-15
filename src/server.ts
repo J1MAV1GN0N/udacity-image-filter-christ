@@ -43,7 +43,7 @@ import {
     let { image_url } = req.query;
 
     if (!image_url) {
-      return res.status(400).send(`image_url is required`);
+      return res.status(400).send(`An image URL is required.`);
     }
 
     try {
@@ -51,12 +51,12 @@ import {
       const filteredpath = await filterImageFromURL(image_url)
       // Send the resulting file in response.
       res.status(200).sendFile(filteredpath, {}, (err) => {
-        if (err) { return res.status(422).send(`Not able to process the image`); }
+        if (err) { return res.status(422).send(`Unprocessable Entity - Not able to process the image.`); }
         // Deleting any used image file.
         deleteLocalFiles([filteredpath]);
       })
     } catch (err) {
-      res.status(422).send(`Not able to process the image, Make sure image url is correct`);
+      res.status(422).send(`Unprocessable Entity - Not able to process the image, make sure image url you are using is correct.`);
     }
   });
 
@@ -65,7 +65,7 @@ import {
   // Root Endpoint
   // Displays a simple message to the user
   app.get( "/", async ( req, res ) => {
-    res.send("If you want to filter a public image simply try GET /filteredimage?image_url={{}} :)")
+    res.send("If you want to filter a public image simply try http://{{HOST}}/filteredimage?image_url={{IMAGE URL}} :)")
   });
   
 
