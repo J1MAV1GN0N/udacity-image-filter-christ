@@ -1,6 +1,4 @@
 
 export const config = {
-    "dev": {
-        "api_key": process.env.DEV_API_KEY
-    }
+    "api_key": process.env.API_KEY
 }
