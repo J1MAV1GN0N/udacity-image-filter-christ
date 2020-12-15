@@ -18,4 +18,5 @@ Wenn Sie sich dazu in der Lage fühlen, refaktorisieren Sie die Kurs-RESTapi, um
 Host: udacity-image-filter-christ-dev.eu-central-1.elasticbeanstalk.com
 
 ### API KEY Authentication
+The project submission includes authentication, using an API key.
 API KEY Value: 053c0160-160c-4f28-b82a-017134aba625
