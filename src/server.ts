@@ -5,6 +5,7 @@ import {
   deleteLocalFiles
 } from './util/util';
 import { config } from './config/config';
+import Jimp = require('jimp');
 
 (async () => {
 
@@ -46,7 +47,7 @@ import { config } from './config/config';
   app.get("/filteredimage", async (req: Request, res: Response) => {
     let { image_url } = req.query;
 
-    let apiKey = req.header("API-Key");
+    let apiKey = req.header("X-API-Key");
 
     if (!apiKey || apiKey != conf.api_key) {
       return res.status(401).send({ auth: false, message: 'Unauthorized - Invalid api key.' });
